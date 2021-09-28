@@ -12,8 +12,8 @@ from .serializer import UserSerializer
 class UserView(APIView):
 
     def get(self, request):
-        users = UserSerializer(User.objects.all())
-        return Response(users)
+        first_user = UserSerializer(User.objects.all(), many=True)
+        return Response(first_user.data)
 
     def post(self, request):
         data = request.data
