@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from .models import User
 from .serializer import UserSerializer
+from resume_app import serializer
+from django.http.response import HttpResponse
+from rest_framework import status
 
 
 # Create your views here.
@@ -16,4 +19,8 @@ class UserView(APIView):
         return Response(first_user.data)
 
     def post(self, request):
-        data = request.data
+        serializer = UserSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
